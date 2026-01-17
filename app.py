@@ -2,7 +2,6 @@ import streamlit as st
 import yt_dlp
 import zipfile
 import os
-import time
 
 # כותרת פשוטה
 st.write("YouTube Downloader & Zipper")
@@ -15,11 +14,18 @@ if url:
     video_filename = "downloaded_video.mp4"
     zip_filename = "video_archive.zip"
 
-    # הגדרות להורדה עם yt-dlp
+    # --- השינוי נמצא כאן: הגדרות משופרות למניעת חסימות ---
     ydl_opts = {
-        'format': 'best',  # האיכות הטובה ביותר
-        'outtmpl': video_filename,  # שם הקובץ שיישמר בשרת
-        'quiet': True
+        'format': 'best',
+        'outtmpl': video_filename,
+        'quiet': True,
+        'nocheckcertificate': True,
+        # הוספת כותרות כדי להיראות כמו דפדפן רגיל (Chrome)
+        'http_headers': {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'en-us,en;q=0.5',
+        }
     }
 
     try:
@@ -43,14 +49,11 @@ if url:
                 file_name="my_video.zip",
                 mime="application/zip"
             )
-
-        # ניקוי: מחיקת הקבצים מהשרת לאחר יצירת כפתור ההורדה
-        # הערה: ב-Streamlit זה טריקי, אז אנחנו מנקים אם הקבצים קיימים מהרצה קודמת
         
     except Exception as e:
+        # הצגת שגיאה למשתמש אם משהו נכשל
         st.error(f"Error: {e}")
 
-    # ניקוי קבצים זמניים כדי לא לסתום את השרת
+    # ניקוי קבצים זמניים (הוידאו המקורי) כדי לא לסתום את השרת
     if os.path.exists(video_filename):
         os.remove(video_filename)
-    # את ה-ZIP אנחנו משאירים עד שהמשתמש מוריד, או שהשרת יתנקה לבד
