@@ -13,11 +13,10 @@ if url:
     cookie_file = "cookies.txt" # שם הקובץ שהעלית לגיטהאב
 
     ydl_opts = {
-        'format': 'best',
+        'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
         'outtmpl': video_filename,
         'quiet': True,
         'nocheckcertificate': True,
-        # השימוש בקובץ ה-Cookies למניעת חסימת השרת:
         'cookiefile': cookie_file, 
         'http_headers': {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
