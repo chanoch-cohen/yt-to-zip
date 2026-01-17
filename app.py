@@ -13,19 +13,17 @@ if url:
     cookie_file = "cookies.txt" # שם הקובץ שהעלית לגיטהאב
 
     ydl_opts = {
-        # מחפש קובץ MP4 מוכן כדי לא להסתבך עם חיבורים
-        'format': 'best[ext=mp4]/best', 
+        'format': 'best',
         'outtmpl': video_filename,
-        'quiet': False, # שיניתי ל-False כדי שתוכל לראות לוגים בשרת אם זה נכשל
+        'quiet': False,
         'nocheckcertificate': True,
         'cookiefile': cookie_file,
-        # הגדרות לעקיפת החידה של יוטיוב
-        'extract_flat': False,
-        'http_headers': {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Accept': '*/*',
-            'Connection': 'keep-alive',
-        }
+        # הגדרה שאומרת ל-yt-dlp להתחזות לאפליקציית אנדרואיד
+        'extractor_args': {
+            'youtube': {
+                'player_client': ['android'],
+            }
+        },
     }
 
     try:
